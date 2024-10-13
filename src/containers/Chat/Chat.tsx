@@ -1,5 +1,6 @@
 import MessageList from "../../components/MessageList/MessageList.tsx";
 import {useEffect, useState} from "react";
+import Loader from "../../components/Loader/Loader.tsx";
 
 interface Message {
     message: string;
@@ -10,6 +11,7 @@ interface Message {
 
 const Chat = () => {
     const [messages, setMessages] = useState<Message[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getAllMessages = async (): Promise<void> => {
@@ -23,6 +25,7 @@ const Chat = () => {
             } catch (error) {
                 alert(error);
             }
+            setIsLoading(false);
         };
         getAllMessages();
     }, []);
@@ -30,7 +33,11 @@ const Chat = () => {
 
     return (
         <>
-            <MessageList messages ={messages}/>
+            {isLoading ? (
+                <Loader/>
+            ):
+                <MessageList messages ={messages}/>
+            }
         </>
     );
 };
